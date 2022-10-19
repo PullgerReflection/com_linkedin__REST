@@ -13,20 +13,20 @@ def createPeople(self: APITestCase):
 
     pDATA = person_DATA()
 
-    resultGet = self.client.post('/pullgerR/com_linkedin/api/people/', pDATA)
+    resultGet = self.client.post('/pullgerR/com_linkedin/api/people', pDATA)
     self.assertEqual(resultGet.status_code, 201, "REST error on creating people")
 
-    response = self.client.get("/pullgerR/com_linkedin/api/people/")
+    response = self.client.get("/pullgerR/com_linkedin/api/people")
     self.assertEqual(response.status_code, 200, "Incorrect get data")
 
     dataResponse = response.data.get("data")
-    self.assertIsNotNone(dataResponse, "Incorrect get responce")
+    self.assertIsNotNone(dataResponse, "Incorrect get response")
 
     self.assertEqual(dataResponse.get('count'), 1, "Incorrect count of response")
     self.assertEqual(dataResponse.get('page_current'), 1, "Incorrect page count of response")
 
     dataPosts = dataResponse.get('posts')
-    self.assertIsNotNone(dataPosts, "No 'posts' in responce")
+    self.assertIsNotNone(dataPosts, "No 'posts' in response")
 
     self.assertEqual(len(dataPosts), 1, "Incorrect size of list")
 
