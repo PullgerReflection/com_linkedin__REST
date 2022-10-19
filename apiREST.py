@@ -8,9 +8,8 @@ from pullgerMultiSessionManager import api
 from rest_framework.pagination import PageNumberPagination
 from . import serializers
 from pullgerReflection.com_linkedin import models
-from pullgerLogin.pullgerReflection.REST import logger
-
-loggerName = 'pullgerReflection.com_linkedin.REST'
+# from pullgerLogin.pullgerReflection.REST import logger
+from pullgerInternalControl.pullgerReflection.REST.logging import logger
 
 
 class CustomPaginator(PageNumberPagination):
@@ -37,7 +36,7 @@ class Ping(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request):
-        content = {'message': 'Pong: ' + loggerName}
+        content = {'message': 'Pong: Reflection LinkedIN'}
         # time.sleep(1)
         return Response(content)
 
@@ -50,7 +49,7 @@ class CompaniesListView(generics.GenericAPIView,
     queryset = models.companies.objects.get_list()
 
     def get(self, request, *args, **kwargs):
-        self.serializer_class = serializers.PeopleListSerializer
+        self.serializer_class = serializers.CompaniesListSerializer
         try:
             returnResponse = self.list(request, *args, **kwargs)
         except BaseException as e:
@@ -62,28 +61,29 @@ class CompaniesRetrieveUpdateDeleteView(generics.GenericAPIView,
                                     mixins.RetrieveModelMixin,
                                     mixins.UpdateModelMixin,
                                     mixins.DestroyModelMixin):
+
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPaginator
-    queryset = models.people.objects.getAllPersons()
+    queryset = models.companies.objects.get_list()
 
     def get(self, request, *args, **kwargs):
         try:
-            self.serializer_class = serializers.PeopleListSerializer
-            returnResponce = self.retrieve(request, *args, **kwargs)
+            self.serializer_class = serializers.CompaniesListSerializer
+            return_response = self.retrieve(request, *args, **kwargs)
         except:
             pass
 
-        return returnResponce
+        return return_response
 
     def put(self, request, *args, **kwargs):
-        self.serializer_class = serializers.PeopleModifySerializer
-        returnResponce = self.update(request, *args, **kwargs)
-        return returnResponce
+        self.serializer_class = serializers.CompaniesModifySerializer
+        return_response = self.update(request, *args, **kwargs)
+        return return_response
 
     def delete(self, request, *args, **kwargs):
-        self.serializer_class = serializers.PeopleModifySerializer
-        returnResponce = self.destroy(request, *args, **kwargs)
-        return returnResponce
+        self.serializer_class = serializers.CompaniesModifySerializer
+        return_response = self.destroy(request, *args, **kwargs)
+        return return_response
 
 
 
@@ -145,26 +145,26 @@ class PeopleRetrieveUpdateDeleteView(generics.GenericAPIView,
     def get(self, request, *args, **kwargs):
         try:
             self.serializer_class = serializers.PeopleListSerializer
-            returnResponce = self.retrieve(request, *args, **kwargs)
+            return_response = self.retrieve(request, *args, **kwargs)
         except:
             pass
 
-        return returnResponce
+        return return_response
 
     def put(self, request, *args, **kwargs):
         self.serializer_class = serializers.PeopleModifySerializer
-        returnResponce = self.update(request, *args, **kwargs)
-        return returnResponce
+        return_response = self.update(request, *args, **kwargs)
+        return return_response
 
     def delete(self, request, *args, **kwargs):
         self.serializer_class = serializers.PeopleModifySerializer
-        returnResponce = self.destroy(request, *args, **kwargs)
-        return returnResponce
+        return_response = self.destroy(request, *args, **kwargs)
+        return return_response
 
 
-class threadTask_Ping(APIView):
+class ThreadTaskPing(APIView):
     permission_classes = (AllowAny,)
-    http_method_names = ('get')
+    http_method_names = ('get',)
 
     # serializer_class
     # queryset
@@ -180,11 +180,11 @@ class threadTask_Ping(APIView):
             from pullgerReflection import com_linkedin__TT
         except BaseException as e:
             logRecord = logger.info(
-                msgPrivat=f"{str(e)}",
-                msgPublic="Internal server error."
+                msgt=f"{str(e)}",
+                msg_public="Internal server error."
             )
             content['message'] = 'Pong: Thread Task'
-            content['error'] = logRecord.msgPublic
+            content['error'] = logRecord.msg_public
             statusResponse = status.HTTP_500_INTERNAL_SERVER_ERROR
         else:
             content['message'] = 'Pong: Thread Task'
@@ -193,7 +193,7 @@ class threadTask_Ping(APIView):
         return Response(content, status=statusResponse)
 
 
-class ThreadTask_SendAllTaskForProcessing(APIView):
+class ThreadTaskSendAllTaskForProcessing(APIView):
     permission_classes = (IsAuthenticated,)
     http_method_names = "post"
 
@@ -210,11 +210,11 @@ class ThreadTask_SendAllTaskForProcessing(APIView):
             api_TT.send_task_for_processing()
         except BaseException as e:
             logRecord = logger.info(
-                msgPrivat=f"{str(e)}",
-                msgPublic="Internal server error."
+                msg_=f"{str(e)}",
+                msg_public="Internal server error."
             )
             content['message'] = 'Pong: Thread Task'
-            content['error'] = logRecord.msgPublic
+            content['error'] = logRecord.msg_public
             statusResponse = status.HTTP_500_INTERNAL_SERVER_ERROR
         else:
             content['message'] = 'Thread Task sanded for processing.'
