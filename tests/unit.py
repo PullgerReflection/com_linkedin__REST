@@ -1,9 +1,10 @@
 from rest_framework.test import APITestCase
-from . import UnitOperations
+from .tool import unitOperationsRRest
+
 
 class Test_000_Smoke(APITestCase):
     def setUp(self):
-        UnitOperations.setUpUnit(self)
+        unitOperationsRRest.setUpUnit(self)
 
     def test_001_0_0_Ping(self):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token)
@@ -18,10 +19,10 @@ class Test_000_Smoke(APITestCase):
     def test_003_0_0_People(self):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token)
 
-        UnitOperations.createPeople(self)
+        unitOperationsRRest.createPeople(self)
 
     def test_004_0_0_SendTaskToProcessing(self):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token)
 
-        UnitOperations.createPeople(self)
-        UnitOperations.send_all_task_to_processing(self)
+        unitOperationsRRest.createPeople(self)
+        unitOperationsRRest.send_all_task_to_processing(self)

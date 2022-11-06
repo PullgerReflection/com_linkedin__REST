@@ -1,17 +1,10 @@
-from pullgerAuthJWT.tests import unit as unitAuthJWT
 from rest_framework.test import APITestCase
 
 
-def setUpUnit(self: APITestCase):
-    unitAuthJWT.UnitOperations.CreateUser(self)
-    unitAuthJWT.UnitOperations.GetToken(self)
-    self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token)
+def create_people(self: APITestCase):
+    from pullgerReflection.com_linkedin.tests.tools.DataTemplate import person_data
 
-
-def createPeople(self: APITestCase):
-    from pullgerReflection.com_linkedin.tests.dataTemplate import person_DATA
-
-    pDATA = person_DATA()
+    pDATA = person_data()
 
     resultGet = self.client.post('/pullgerR/com_linkedin/api/people', pDATA)
     self.assertEqual(resultGet.status_code, 201, "REST error on creating people")
@@ -32,8 +25,3 @@ def createPeople(self: APITestCase):
 
     for key, value in pDATA.items():
         self.assertEqual(dataPosts[0].get(key), value, "Incorrect count of response")
-
-
-def send_all_task_to_processing(self: APITestCase):
-    resultGet = self.client.post("/pullgerR/com_linkedin/api/threadtask/sendAllTaskForProcessing")
-    self.assertEqual(resultGet.status_code, 200, "Error on sent task for processing")

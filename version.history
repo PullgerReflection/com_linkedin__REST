@@ -1,5 +1,11 @@
 Version history [pullgerReflection.com_linkedin__REST]
 
+{0.2.0.0} [pullgerReflection.com_linkedin__REST]
+ - Append REST interface for Search
+ - Append REST interface for Locations
+ - Convert apiREST to package
+ - Convert serializers to package
+
 {0.1.0.0} [pullgerReflection.com_linkedin__REST]
  - cumulative update
 
