@@ -1,5 +1,8 @@
 Version history [pullgerReflection.com_linkedin__REST]
 
+{0.2.1.0} [pullgerReflection.com_linkedin__REST]
+ - Add check uniq id on cleate Locations
+
 {0.2.0.0} [pullgerReflection.com_linkedin__REST]
  - Append REST interface for Search
  - Append REST interface for Locations

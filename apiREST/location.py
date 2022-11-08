@@ -45,18 +45,23 @@ class LocationsAL(generics.GenericAPIView,
     def post(self, request, *args, **kwargs):
         self.serializer_class = serializers.LocationsListSerializer
         try:
-            returnResponse = self.create(request, *args, **kwargs)
+            return_response = api.add_location(**request.data)
+            self.content['status'] = "OK"
+            self.content['message'] = ""
+            self.content['data'] = return_response.to_json()
         except BaseException as e:
             logger.critical(f"Error on executing request [{str(request)}] execute 'self.list': {str(e)}")
 
             self.content['status'] = 'error'
             self.content['message'] = 'Internal server error.'
             self.content['data'] = None
-            statusResp = status.HTTP_500_INTERNAL_SERVER_ERROR
+            status_resp = status.HTTP_500_INTERNAL_SERVER_ERROR
 
-            returnResponse = Response(self.content, status=statusResp)
+            # returnResponse = Response(self.content, status=status_resp)
+        else:
+            status_resp = status.HTTP_201_CREATED
 
-        return returnResponse
+        return Response(self.content, status=status_resp)
 
 
 class LocationsRGUD(generics.GenericAPIView,
